@@ -33,4 +33,17 @@ export class ProductService {
     }))
     return product[0]
   }
+
+  async addProduct(data: Product): Promise<any> {
+    const conn = await this.mysql.getConnection()
+    const results = JSON.parse(
+      JSON.stringify(
+        await conn.query(`insert into products (product, price) values (?,?)`, [
+          data.product,
+          data.price,
+        ]),
+      ),
+    )
+    return results
+  }
 }
