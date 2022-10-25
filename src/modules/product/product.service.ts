@@ -46,4 +46,14 @@ export class ProductService {
     )
     return results
   }
+
+  async dropProduct(id: string): Promise<boolean> {
+    const conn = await this.mysql.getConnection()
+    const results = JSON.parse(
+      JSON.stringify(
+        await conn.query(`delete from products where id = ${id} limit 1`),
+      ),
+    )
+    return results
+  }
 }
