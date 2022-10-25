@@ -5,6 +5,7 @@ import { Product } from './product.entity'
 @Injectable()
 export class ProductService {
   constructor(@Inject('DATABASE') private readonly mysql: MySQLProvider) {}
+
   async findAll(): Promise<Product[]> {
     const conn = await this.mysql.getConnection()
     const results = JSON.parse(
@@ -16,5 +17,20 @@ export class ProductService {
       price: product.price,
     }))
     return products
+  }
+
+  async findById(id: string): Promise<Product> {
+    const conn = await this.mysql.getConnection()
+    const results = JSON.parse(
+      JSON.stringify(
+        await conn.query(`select * from products where id = ${id}`),
+      ),
+    )
+    const product: Product[] = results.map((product) => ({
+      id: product.id,
+      product: product.product,
+      price: product.price,
+    }))
+    return product[0]
   }
 }
