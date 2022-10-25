@@ -11,6 +11,7 @@ export class ProductService {
       JSON.stringify(await conn.query('select * from products')),
     )
     const products: Product[] = results.map((product) => ({
+      id: product.id,
       product: product.product,
       price: product.price,
     }))
